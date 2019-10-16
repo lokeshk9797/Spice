@@ -62,7 +62,7 @@ namespace Spice
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{areas=Customer}/{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }
