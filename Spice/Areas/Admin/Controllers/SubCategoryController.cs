@@ -79,6 +79,8 @@ namespace Spice.Areas.Admin.Controllers
             }
         }
 
+
+        //API to GET SubCategories of Selected Category
         [ActionName("GetSubCategory")]
         public async Task<IActionResult> GetSubCategory(int id)
         {
@@ -157,7 +159,6 @@ namespace Spice.Areas.Admin.Controllers
         }
 
         //GET - DETAILS
-
         public async Task<IActionResult> Details(int? id)
         {
             if(id==null)
