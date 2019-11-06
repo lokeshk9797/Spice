@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Spice.Data;
 using Spice.Models;
+using System.Threading.Tasks;
 
 namespace Spice.Areas.Admin.Controllers
 {
@@ -20,7 +17,7 @@ namespace Spice.Areas.Admin.Controllers
         //GET
         public async Task<IActionResult> Index()
         {
-            return View(await _db.Category.ToListAsync() );
+            return View(await _db.Category.ToListAsync());
         }
 
         //GET-CREATE
@@ -32,9 +29,9 @@ namespace Spice.Areas.Admin.Controllers
         //POST - CREATE
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create (Category category )
+        public async Task<IActionResult> Create(Category category)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(category);
             }
@@ -45,14 +42,14 @@ namespace Spice.Areas.Admin.Controllers
 
         //GET - EDIT
 
-        public async Task<IActionResult> Edit (int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            if(id==null)
+            if (id == null)
             {
                 return NotFound();
             }
             var category = await _db.Category.FindAsync(id);
-            if(category==null)
+            if (category == null)
             {
                 return NotFound();
             }
@@ -64,7 +61,7 @@ namespace Spice.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Category category)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(category);
             }
@@ -89,16 +86,16 @@ namespace Spice.Areas.Admin.Controllers
         }
 
         //POST - DELETE
-        [HttpPost,ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? id)
         {
-            if(id==null)
+            if (id == null)
             {
                 return NotFound();
             }
             var category = await _db.Category.FindAsync(id);
-            if(category==null)
+            if (category == null)
             {
                 return View();
             }
@@ -122,6 +119,6 @@ namespace Spice.Areas.Admin.Controllers
             }
             return View(category);
         }
-      
+
     }
 }

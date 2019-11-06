@@ -1,5 +1,3 @@
-using System;
-
 namespace Spice.Models
 {
     public class ErrorViewModel
