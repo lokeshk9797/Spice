@@ -170,13 +170,14 @@ namespace Spice.Areas.Admin.Controllers
                 return NotFound();
             }
             MenuItemVM.MenuItem = await _db.MenuItem.Include(s => s.Category).Include(s => s.SubCategory).SingleOrDefaultAsync(s => s.Id == id);
-            MenuItemVM.SubCategories = await _db.SubCategory.Where(s => s.CategoryId == MenuItemVM.MenuItem.CategoryId).ToListAsync();
-
+            
             if (MenuItemVM.MenuItem == null)
             {
                 return NotFound();
             }
             return View(MenuItemVM);
         }
+
+        
     }
 }
