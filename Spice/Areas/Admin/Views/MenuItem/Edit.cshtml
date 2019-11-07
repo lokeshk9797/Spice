@@ -8,7 +8,7 @@
 <h2 class="text-info">Edit Menu Items</h2>
 <br />
 
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" asp-action="Edit">
     <div class="border backgroundWhite row">
         <input type="hidden" asp-for="MenuItem.Id" />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -78,7 +78,7 @@
         <div class="col-3 offset-1">
             <img src="@Model.MenuItem.Image" width="100%" style="border-radius:5px;border :1px solid #bbb9b9" />
         </div>
-        
+
 
     </div>
 
@@ -117,12 +117,20 @@
 
         function getSubCategory() {
             var url = '@Url.Content("~/")' + "Admin/SubCategory/GetSubCategory";
+            var selectedValue=@Model.MenuItem.SubCategoryId;
             var ddlSource = '#CategoryId';
             $.getJSON(url, { id: $(ddlSource).val() }, function (data) {
                 var items = '';
                 $('#SubCategoryId').empty();
                 $.each(data, function (i, subcategory) {
+                    if (subcategory.value == selectedValue) {
+                        items += "<option value='" + subcategory.value + "' selected>" + subcategory.text + "</option>";
+
+                    }
+                    else {
                     items += "<option value='" + subcategory.value + "'>" + subcategory.text + "</option>";
+
+                    }
                 });
 
                 $('#SubCategoryId').html(items);

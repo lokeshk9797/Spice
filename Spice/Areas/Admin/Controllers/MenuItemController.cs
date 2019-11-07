@@ -169,7 +169,7 @@ namespace Spice.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            MenuItemVM.MenuItem = await _db.MenuItem.Include(s => s.Category).Include(s => s.SubCategory).SingleOrDefaultAsync(s => s.Id == id);
+            MenuItemVM.MenuItem =await  _db.MenuItem.Include(s => s.Category).Include(s => s.SubCategory).SingleOrDefaultAsync(s => s.Id == id);
             
             if (MenuItemVM.MenuItem == null)
             {
@@ -178,6 +178,47 @@ namespace Spice.Areas.Admin.Controllers
             return View(MenuItemVM);
         }
 
-        
+        //GET - DELETE
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            MenuItemVM.MenuItem = await _db.MenuItem.Include(s => s.Category).Include(s => s.SubCategory).SingleOrDefaultAsync(s => s.Id == id);
+
+            if (MenuItemVM.MenuItem == null)
+            {
+                return NotFound();
+            }
+            return View(MenuItemVM);
+        }
+
+        //POST - DELETE
+        [HttpPost,ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeletePOST(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var menuItemFromDB = await _db.MenuItem.FindAsync(id);
+
+            if (menuItemFromDB == null)
+            {
+                return NotFound();
+            }
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            var imagePath = Path.Combine(webRootPath, menuItemFromDB.Image.TrimStart('\\'));
+            if (System.IO.File.Exists(imagePath))
+            {
+                System.IO.File.Delete(imagePath);
+            }
+
+            _db.MenuItem.Remove(menuItemFromDB);
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

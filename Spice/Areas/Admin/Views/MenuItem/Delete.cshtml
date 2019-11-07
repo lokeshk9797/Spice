@@ -1,7 +1,7 @@
 ﻿@model Spice.Models.ViewModel.MenuItemViewModel
 @using Spice.Extensions
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Delete";
 }
 
 <br />
@@ -37,13 +37,13 @@
                     <input readonly asp-for="MenuItem.Price" class="form-control" />
                 </div>
             </div>
-           
+
             <div class="form-group row">
                 <div class="col-4">
                     <label asp-for="MenuItem.CategoryId" class="col-form-label"></label>
                 </div>
                 <div class="col-8">
-                    <input  readonly asp-for="MenuItem.Category.Name" class="form-control" />
+                    <input readonly asp-for="MenuItem.Category.Name" class="form-control" />
                 </div>
             </div>
             <div class="form-group row">
@@ -73,7 +73,7 @@
 
     <div class="col-8">
         <div class="col-8 offset-4">
-            <partial name="_DetailsAndBackToListButtons" model="Model.MenuItem.Id" />
+            <partial name="_DeleteAndBackToListButtons" model="Model.MenuItem.Id" />
         </div>
 
     </div>
@@ -95,5 +95,4 @@
         })
     </script>
 
-    
-}
+    }
