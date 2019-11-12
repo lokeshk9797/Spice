@@ -7,5 +7,6 @@ namespace Spice.Models.ViewModel
         public MenuItem MenuItem { get; set; }
         public IEnumerable<Category> Categories { get; set; }
         public IEnumerable<SubCategory> SubCategories { get; set; }
+        public bool IsImageDeleted { get; set; }
     }
 }

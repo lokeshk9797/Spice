@@ -9,71 +9,79 @@
 <br />
 
 <form method="post" enctype="multipart/form-data" asp-action="Create">
-    <div class="border backgroundWhite">
+    <div class="border backgroundWhite row">
+        <input id="ImageDeleted" type="hidden" asp-for="IsImageDeleted" />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="MenuItem.Name" class="col-form-label"></label>
+        <div class="col-8">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="MenuItem.Name" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="MenuItem.Name" class="form-control" />
+                </div>
+                <span asp-validation-for="MenuItem.Name" class="text-danger"> </span>
             </div>
-            <div class="col-5">
-                <input asp-for="MenuItem.Name" class="form-control" />
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="MenuItem.Description" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    @Html.TextAreaFor(m => m.MenuItem.Description)
+                </div>
+                <span asp-validation-for="MenuItem.Description" class="text-danger"> </span>
             </div>
-            <span asp-validation-for="MenuItem.Name" class="text-danger"> </span>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="MenuItem.Price" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="MenuItem.Price" class="form-control" />
+                </div>
+                <span asp-validation-for="MenuItem.Price" class="text-danger"> </span>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="MenuItem.Image" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <input type="file" id="InputFile" name="files" multiple class="form-control"
+                           onchange="ImageChanged()" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="MenuItem.CategoryId" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <select asp-for="@Model.MenuItem.CategoryId" id="CategoryId" asp-items="Model.Categories.ToSelectListItem(Model.MenuItem.CategoryId)" class="form-control"></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="MenuItem.SubCategoryId" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <select asp-for="@Model.MenuItem.SubCategoryId" name="SubCategoryId" id="SubCategoryId" asp-items="@(new SelectList(string.Empty,"Id","Name"))" class="form-control"></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="MenuItem.Spicyness" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <select asp-for="MenuItem.Spicyness" asp-items="Html.GetEnumSelectList<MenuItem.ESpicy>()" class="form-control"> </select>
+                </div>
+            </div>
         </div>
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="MenuItem.Description" class="col-form-label"></label>
-            </div>
-            <div class="col-5">
-                @Html.TextAreaFor(m => m.MenuItem.Description)
-            </div>
-            <span asp-validation-for="MenuItem.Description" class="text-danger"> </span>
+
+        <div class="col-3 offset-1">
+            <img id="ItemImage" src="@Model.MenuItem.Image" style="visibility:hidden; width:100% ; border-radius:5px;border :1px solid #bbb9b9" />
+            <button id="DeleteImageButton"  class="btn btn-info form-control" style="visibility:hidden" type="button" onclick="RemoveImage()">Delete Image</button>
         </div>
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="MenuItem.Price" class="col-form-label"></label>
-            </div>
-            <div class="col-5">
-                <input asp-for="MenuItem.Price" class="form-control" />
-            </div>
-            <span asp-validation-for="MenuItem.Price" class="text-danger"> </span>
-        </div>
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="MenuItem.Image" class="col-form-label"></label>
-            </div>
-            <div class="col-5">
-                <input type="file" name="files" multiple class="form-control" />
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="MenuItem.CategoryId" class="col-form-label"></label>
-            </div>
-            <div class="col-5">
-                <select asp-for="@Model.MenuItem.CategoryId" id="CategoryId"
-                        asp-items="Model.Categories.ToSelectListItem(Model.MenuItem.CategoryId)"
-                        class="form-control"></select>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="MenuItem.SubCategoryId" class="col-form-label"></label>
-            </div>
-            <div class="col-5">
-                <select asp-for="@Model.MenuItem.SubCategoryId"
-                        name="SubCategoryId" id="SubCategoryId"
-                        asp-items="@(new SelectList(string.Empty,"Id","Name"))" class="form-control"></select>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="MenuItem.Spicyness" class="col-form-label"></label>
-            </div>
-            <div class="col-5">
-                <select asp-for="MenuItem.Spicyness" asp-items="Html.GetEnumSelectList<MenuItem.ESpicy>()" class="form-control"> </select>
-            </div>
-        </div>
+
+
+
 
     </div>
     <div class="form-group row">
@@ -101,7 +109,20 @@
             });
 
         });
+        function ImageChanged() {
+            document.getElementById("DeleteImageButton").style.visibility = "visible";
+            document.getElementById('ItemImage').src = window.URL.createObjectURL(document.getElementById("InputFile").files[0]);
+            document.getElementById('ItemImage').style.visibility = "visible";
 
+        }
+         function RemoveImage() {
+             var defaultImg = "@ViewBag.DefaultPath"
+             document.getElementById("ItemImage").src = defaultImg;
+             document.getElementById("DeleteImageButton").style.visibility = "hidden";
+             document.getElementById('ItemImage').style.visibility = "hidden";
+             document.getElementById("InputFile").value = "";
+             document.getElementById("ImageDeleted").value = true;
+        }
 
         function getSubCategory() {
             var url = '@Url.Content("~/")' + "Admin/SubCategory/GetSubCategory";

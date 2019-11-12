@@ -11,6 +11,7 @@
 <form method="post" enctype="multipart/form-data" asp-action="Edit">
     <div class="border backgroundWhite row">
         <input type="hidden" asp-for="MenuItem.Id" />
+        <input id="ImageDeleted" type="hidden" asp-for="IsImageDeleted" />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <div class="col-8">
@@ -46,7 +47,8 @@
                     <label asp-for="MenuItem.Image" class="col-form-label"></label>
                 </div>
                 <div class="col-8">
-                    <input type="file" name="files" multiple class="form-control" />
+                    <input type="file" id="InputFile" name="files" multiple class="form-control"
+                           onchange=""/>
                 </div>
             </div>
             <div class="form-group row">
@@ -76,17 +78,14 @@
         </div>
 
         <div class="col-3 offset-1">
-            <img src="@Model.MenuItem.Image" width="100%" style="border-radius:5px;border :1px solid #bbb9b9" />
+            <img id="ItemImage" src="@Model.MenuItem.Image" style ="width:100% ; border-radius:5px;border :1px solid #bbb9b9" />
+            <button id="DeleteImageButton" class="btn btn-info form-control" type="button" onclick="RemoveImage()">Delete Image</button>
         </div>
-
-
     </div>
-
     <div class="col-8">
         <div class="col-8 offset-4">
             <partial name="_EditAndBackToListButtons" model="Model.MenuItem.Id" />
         </div>
-
     </div>
 
     <div class="form-group row">
@@ -105,15 +104,25 @@
         })
     </script>
 
+   
     <script type="text/javascript">
         $(document).ready(function () {
             getSubCategory();
             $('#CategoryId').change(function () {
                 getSubCategory();
             });
-
         });
 
+        function ImageChanged() {
+            document.getElementById('ItemImage').src = window.URL.createObjectURL(document.getElementById("InputFile").files[0]);
+        }
+       
+        function RemoveImage() {
+            var defaultImg="@ViewBag.DefaultPath"
+            document.getElementById("ItemImage").src = defaultImg;
+            document.getElementById("InputFile").value = "";
+            document.getElementById("ImageDeleted").value = true;
+        }
 
         function getSubCategory() {
             var url = '@Url.Content("~/")' + "Admin/SubCategory/GetSubCategory";
@@ -125,14 +134,11 @@
                 $.each(data, function (i, subcategory) {
                     if (subcategory.value == selectedValue) {
                         items += "<option value='" + subcategory.value + "' selected>" + subcategory.text + "</option>";
-
                     }
                     else {
                     items += "<option value='" + subcategory.value + "'>" + subcategory.text + "</option>";
-
                     }
                 });
-
                 $('#SubCategoryId').html(items);
             })
         }

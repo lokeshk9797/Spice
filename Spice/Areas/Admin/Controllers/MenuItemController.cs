@@ -92,6 +92,7 @@ namespace Spice.Areas.Admin.Controllers
         //GET - EDIT
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewBag.DefaultPath = @"\\images\\default_food.png";
             if (id == null)
             {
                 return NotFound();
@@ -150,7 +151,13 @@ namespace Spice.Areas.Admin.Controllers
                 }
                 menuItemFromDB.Image = @"\images\" + MenuItemVM.MenuItem.Id + extension_new;
             }
-
+            //If previously existed image is deleted
+            if(MenuItemVM.IsImageDeleted)
+            {
+                var uploads = Path.Combine(webRootPath, @"images\" + StaticDetail.DefaultFoodImage);
+                System.IO.File.Copy(uploads, webRootPath + @"\images\" + MenuItemVM.MenuItem.Id + ".png");
+                menuItemFromDB.Image = @"\images\" + MenuItemVM.MenuItem.Id + ".png";
+            }
             menuItemFromDB.Name = MenuItemVM.MenuItem.Name;
             menuItemFromDB.Description = MenuItemVM.MenuItem.Description;
             menuItemFromDB.Price = MenuItemVM.MenuItem.Price;
