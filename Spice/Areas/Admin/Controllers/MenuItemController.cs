@@ -35,7 +35,7 @@ namespace Spice.Areas.Admin.Controllers
         //GET - INDEX
         public async Task<IActionResult> Index()
         {
-            var menuItems = await _db.MenuItem.Include(s => s.Category).Include(s => s.SubCategory).ToListAsync();
+            var menuItems = await _db.MenuItem.Include(s => s.Category).Include(s => s.SubCategory).OrderBy(s=>s.Category).ToListAsync();
             return View(menuItems);
         }
 

@@ -20,8 +20,12 @@ namespace Spice.Models
 
         [Required]
         public double Discount { get; set; }
+
+        [Display(Name ="Minimum Amount")]
         [Required]
         public double MinimumAmount { get; set; }
+
+        [Required]
         public byte[] Picture { get; set; }
         public bool IsActive { get; set; }
     }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Spice.Data;
 using Spice.Models;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Spice.Areas.Admin.Controllers
@@ -14,10 +15,10 @@ namespace Spice.Areas.Admin.Controllers
         {
             _db = db;
         }
-        //GET
+        //GET - INDEX
         public async Task<IActionResult> Index()
         {
-            return View(await _db.Category.ToListAsync());
+            return View(await _db.Category.OrderBy(c => c.Name).ToListAsync());
         }
 
         //GET-CREATE

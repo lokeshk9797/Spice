@@ -21,6 +21,7 @@ namespace Spice.Areas.Admin.Controllers
         {
             _db = db;
         }
+
         //GET - INDEX
         public async Task<IActionResult> Index()
         {
