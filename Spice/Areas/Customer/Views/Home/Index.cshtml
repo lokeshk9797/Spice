@@ -1,5 +1,10 @@
 ﻿@model Spice.Models.ViewModel.IndexViewModel
 
+
+@{
+    ViewData["Title"] = "Index";
+}
+
 <br />
 @if (Model.Coupons.ToList().Count > 0)
 {
@@ -68,30 +73,30 @@
 
 @section Scripts {
 
-<script src="https://code.jquery.com/jquery-3.4.1.js"
-        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-        crossorigin="anonymous">
-</script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous">
+    </script>
 
-<script>
-    
-    var posts = $('.post');
+    <script>
 
-    (function ($) {
+        var posts = $('.post');
 
-        $("#menu-filters li").click(function () {
-            $("#menu-filters li").removeClass('active btn btn-secondary');
-            $(this).addClass('active btn btn-secondary');
+        (function ($) {
 
-            var selectedFilter = $(this).data("filter");
+            $("#menu-filters li").click(function () {
+                $("#menu-filters li").removeClass('active btn btn-secondary');
+                $(this).addClass('active btn btn-secondary');
 
-            $(".menu-restraunt").fadeOut();
+                var selectedFilter = $(this).data("filter");
 
-            setTimeout(function () {
-                $(selectedFilter).slideDown();
-            },400);
-        });
+                $(".menu-restraunt").fadeOut();
 
-    })(jQuery);
-</script>
+                setTimeout(function () {
+                    $(selectedFilter).slideDown();
+                }, 400);
+            });
+
+        })(jQuery);
+    </script>
 }
